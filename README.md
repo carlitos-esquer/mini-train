@@ -1,35 +1,32 @@
->Made of consonants and vowels,  
->there is a terrible Name,  
->that in its essence encodes God’s all,  
->power, guarded in letters, in hidden syllables.  -- Jorge Luis Borges
+>There's a lady who sures
+>all that glitters is gold  
+>and she's buying a stairway to heaven  -- Led Zeppelin
 
-GOLEM
+mini-train
 =====
 
-I would describe Golem as a Ramaze for kids.  
-Golem is not a framework though, just a controller, but you know... the kind of controller that leaves you in the train 
-even if you did not buy a ticket.  
-It leaves you on the rails if you will (incredibly good pun intended).
+mini-train is an attempt to fork from a rack project(rack-golem) into a
+a very simple web mini-framework (thats the name mini-train)
 
-Install with:
+Install with: (there are no gems yet, so don't try to install right now)
 
-    sudo gem install rack-golem
+    sudo gem install mini-train
 
-Config.ru is one of his names, so say it in a Rackup file.
+You can use config.ru as a start up file as for any rack app based
 
-    require 'db' # Loads ORM models and all
-    require 'go' # Our controller (I do not like that word really)
-    require 'json' # not necessary but used in the example
+    require 'models' # Loads your models and all ORM stuff
+    require 'app' # This is the main file
+    require 'json' # Some help from other gems
     use Rack::ContentLength
     use Rack::Session::Cookies
-    run Go
+    run App
 
-And the winner is:
+Now save this into app.rb
 
-    require 'rack/golem'
+    require 'minitrain'
 
-  	class Go
-	    include Rack::Golem # To hell with sub-classes !!!
+  	class App
+	    include Minitrain # Still no classes to inherit but don't worry just await!
 
 	    before do
 	      # Here you can do many things
@@ -58,7 +55,7 @@ And the winner is:
 	    end
 	    
 	    def best_restaurants_json
-	      # Golem replaces dots and dashes with underscores
+	      # mini-train replaces dots and dashes with underscores
 	      # So you can trigger this handler by visiting /best-restaurant.json
 	      @res['Content-Type'] = "text/json"
 	      JSON.generate({
@@ -71,14 +68,14 @@ And the winner is:
 	    end
 
 	    def not_found(*args)
-	      # This one is defined by Golem but here we decided to override it
+	      # This one is defined by mini-train but here we decided to override it
 	      # Like :index this method receives the arguments in order to make something with it
 	      Email.alert('Too many people are looking for porn here') if args.includes?("porn")
 	      super(args)
 	    end
 	    
 	    def error(err, *args)
-	      # Again this one is defined by Golem and only shows up when RACK_ENV is not `nil` or `dev` or `development`
+	      # Again this one is defined by mini-train and only shows up when RACK_ENV is not `nil` or `dev` or `development`
 	      # Default only prints "ERROR"
 	      # Here we're going to send the error message
 	      # One would rarely show that to the end user but this is just a demo
@@ -93,10 +90,10 @@ And the winner is:
 
 Hopefully no headache.
 
-WHAT GOLEM DOES NOT
+WHAT mini-train DOES NOT
 ===================
 
-- Support templates other than ERB (I plan to use Tilt more cleverly though in order to achieve that without selling my soul)
+- Support templates other than ERB (It's a matter of time to support slim, haml and others)
 - Session/Cookies administration (Like for many things, use a middleware instead ex: Rack::Session::Cookies)
-- Prepare the coffee (Emacs does but Ed is the standard text editor)
-- So many things, why bother...
+- Prepare the coffee (Emacs does but i had never used it, just geany)
+- So many things, but what is a fork for...
