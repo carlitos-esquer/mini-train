@@ -1,14 +1,14 @@
 Gem::Specification.new do |s| 
-  s.name = 'rack-golem'
-  s.version = "0.1.3"
+  s.name = 'mini-train'
+  s.version = "0.1.0"
   s.platform = Gem::Platform::RUBY
-  s.summary = "A Controller middleware that is fairly basic"
-  s.description = "A Controller middleware that is fairly basic. I would say it is a sort of Ramaze for kids"
+  s.summary = "An attempt to create a web mini-framework forked from an rack app (rack-golem)"
+  s.description = "This is a simplistic web framework"
   s.files = `git ls-files`.split("\n").sort
   s.require_path = './lib'
-  s.author = "Mickael Riga"
-  s.email = "mig@campbellhay.com"
-  s.homepage = "http://www.campbellhay.com"
+  s.author = "Carlos Esquer"
+  s.email = "carlitos.esquer@gmail.com"
+  s.homepage = "rubymx.blogspot.com"
   s.add_dependency(%q<tilt>, [">= 1.2.2"])
   s.add_development_dependency(%q<bacon>, "~> 1.1.0")
 end
