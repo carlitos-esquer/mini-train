@@ -1,6 +1,7 @@
+require 'rack'
 require 'tilt'
 
-module Rack::Golem
+module Minitrain
   
   def self.included(klass)
     klass.class_eval do

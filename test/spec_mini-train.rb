@@ -11,14 +11,14 @@ F = ::File
 D = ::Dir
 ROOT = F.dirname(__FILE__)+'/..'
 $:.unshift ROOT+'/lib'
-require 'rack/golem'
+require 'minitrain'
 
 # =========
 # = Basic =
 # =========
 
 class Basic
-  include Rack::Golem
+  include Minitrain
   def no_arg; 'nothing'; end  
   def with_args(a,b); '%s+%s' % [a,b]; end 
   def splat_arg(*a); a.join('+'); end
@@ -38,7 +38,7 @@ BasicLobsterR = ::Rack::MockRequest.new(::Rack::Lint.new(Basic.new(::Rack::Lobst
 # ==========
 
 class Filter
-  include Rack::Golem
+  include Minitrain
   before{@res.write @action=='not_found' ? @action_arguments.join('+') : 'before+'}
   after{@res.write '+after'}
   def wrapped; 'wrapped'; end
@@ -50,7 +50,7 @@ FilterR = ::Rack::MockRequest.new(::Rack::Lint.new(Filter.new))
 # ===========
 
 class Indexed
-  include Rack::Golem
+  include Minitrain
   before{ @res.write("action=#{@action} args=#{@action_arguments.join(',')} ") if @r['switch']=='true' }
   def index(*a); a.join('+'); end
   def exist(*a); a.join('+'); end
@@ -62,7 +62,7 @@ IndexedR = ::Rack::MockRequest.new(::Rack::Lint.new(Indexed.new))
 # ==================
 
 class SimplyIndexed
-  include Rack::Golem
+  include Minitrain
   def index; 'index'; end
   def will_fail; please_fail; end
   private
@@ -76,7 +76,7 @@ SimplyIndexedUsedR = ::Rack::MockRequest.new(::Rack::Lint.new(SimplyIndexed.new(
 # =============
 
 class Sessioned
-  include Rack::Golem
+  include Minitrain
   def set_val(val); @session[:val] = val; end
   def get_val; @session[:val]; end
 end
@@ -86,7 +86,7 @@ SessionedR = ::Rack::MockRequest.new(::Rack::Session::Cookie.new(::Rack::Lint.ne
 # = Specs =
 # =========
 
-describe "Golem" do
+describe "Minitrain" do
   
   it "Should dispatch on a method with no arguments" do
     BasicR.get('/no_arg').body.should=='nothing'
