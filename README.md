@@ -37,6 +37,14 @@ Now save this into app.rb
 	      # @action_arguments => Arguments for the action (really?)
 	    end
 
+			helpers do
+				#altough you can write many things in before block
+				#you always need helpers for your main app
+				def help(with)
+					"Helping the World!"
+				end
+			end
+			
 	    def index(*args)
 	      # When no public method is found
 	      # Of course you don't have to declare one and it is gonna use Controller#not_found instead
@@ -57,8 +65,7 @@ Now save this into app.rb
 	    def best_restaurants_json
 	      # mini-train replaces dots and dashes with underscores
 	      # So you can trigger this handler by visiting /best-restaurant.json
-	      @res['Content-Type'] = "text/json"
-	      JSON.generate({
+	      json_response({
 	        'title' => 'Best restaurants in town',
 	        'list' => Restaurant.full_list
 	      })
