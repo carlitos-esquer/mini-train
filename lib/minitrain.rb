@@ -74,7 +74,7 @@ module Minitrain
     def error(e, *args)
       puts "\n", e.class, e.message, e.backtrace # Log the error anyway
       @res.status = 500
-      "ERROR"
+      "ERROR 500"
     end
     
     def erb(template)
