@@ -88,7 +88,8 @@ Now save this into app.rb
 
 	  end
 
-Hopefully no headache.
+You need to provide the class Post in your models.
+Class Spy doesn't exist so you need to create it (he he, just kidding).
 
 WHAT mini-train DOES NOT
 ===================
