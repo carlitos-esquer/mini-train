@@ -11,8 +11,9 @@ module Minitrain
   end
   
   module ClassMethods
-    attr_reader :before_block, :after_block
+    attr_reader :before_block, :helpers_block, :after_block
     def before(&block); @before_block = block; end
+    def helpers(&block); @helpers_block = block; end
     def after(&block); @after_block = block; end
     def dispatcher(&block); @dispatcher_block = block; end
     def dispatcher_block
@@ -29,6 +30,7 @@ module Minitrain
         end
         
         instance_eval(&self.class.before_block) unless self.class.before_block.nil?
+        instance_eval(&self.class.helpers_block) unless self.class.helpers_block.nil?
         
         begin
           @res.write(self.__send__(@action,*@action_arguments))
@@ -77,19 +79,47 @@ module Minitrain
       "ERROR 500"
     end
     
-    def erb(template)
+    def json_response(data=nil)
+			@res['Content-Type'] = "text/plain;charset=utf-8"
+			data.nil? ? "{}" : JSON.generate(data)
+    end
+    
+    def yaml_response(data=nil)
+			@res['Content-Type'] = "text/plain;charset=utf-8"
+			data.to_yaml
+    end
+    
+    def tpl(template, extention)
+			key = (template.to_s + extention.gsub(/[.]/,"_")).to_sym
       @@tilt_cache ||= {}
-      if @@tilt_cache.has_key?(template)
-        template_obj = @@tilt_cache[template]
+      if @@tilt_cache.has_key?(key)
+        template_obj = @@tilt_cache[key]
       else
-        erb_extention = @r.env['erb.extention'] || ".erb"
-        views_location = @r.env['erb.location'] || ::Dir.pwd+'/views/'
+        views_location = @r.env['views'] || ::Dir.pwd+'/views/'
         views_location << '/' unless views_location[-1]==?/
-        template_obj = Tilt.new("#{views_location}#{template}#{erb_extention}")
-        @@tilt_cache.store(template,template_obj) if ENV['RACK_ENV']=='production'
+        template_obj = Tilt.new("#{views_location}#{template}#{extention}")
+        @@tilt_cache.store(key,template_obj) if ENV['RACK_ENV']=='production'
       end
+      @res['Content-Type'] = "text/html;charset=utf-8"
       template_obj.render(self)
     end
+    
+		def erb(template)
+			tpl(template,'.erb')
+		end
+		
+		def slim(template)
+			tpl(template,'.slim')
+		end
+		
+		def haml(template)
+			tpl(template,'.haml')
+		end
+
+		def scss(template)
+			tpl(template,'.scss')
+		end
   end
+  
   
 end

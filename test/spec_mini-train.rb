@@ -82,6 +82,16 @@ class Sessioned
 end
 SessionedR = ::Rack::MockRequest.new(::Rack::Session::Cookie.new(::Rack::Lint.new(Sessioned.new)))
 
+# =============
+# = Sessioned =
+# =============
+
+class UsingHelpers
+	include Minitrain
+	helpers { def hola(w); "Hola " + w; end }
+	def index; hola("mundo");	end
+end
+UsinghelpersR = ::Rack::MockRequest.new(::Rack::Lint.new(UsingHelpers.new))
 # =========
 # = Specs =
 # =========
@@ -178,4 +188,8 @@ describe "Minitrain" do
     BasicR.get('/test_throw').body.should=='Growl'
   end
   
+  it "Should response with the helpers content" do
+    UsinghelpersR.get('/').body.should=='Hola mundo'
+  end
+
 end

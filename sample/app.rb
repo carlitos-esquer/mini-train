@@ -1,4 +1,5 @@
 ﻿require 'minitrain'
+require 'haml'
 class App
 	include Minitrain # Still no classes to inherit but don't worry just await!
 
@@ -11,6 +12,14 @@ class App
 		# @action_arguments => Arguments for the action (really?)
 	end
 
+	helpers do
+		#altough you can write many things in before block
+		#we recommend you to write helpers here to give your app some structure
+		def simple
+			"<b>Siempre genera BOLD</b>"
+		end
+	end
+
 	def index(*args)
 		# When no public method is found
 		# Of course you don't have to declare one and it is gonna use Controller#not_found instead
@@ -19,7 +28,7 @@ class App
 								 {titulo: "bienvenidos", contenido: "Nunca habra paz..."},
 								 {titulo: "el final", contenido: "como en los viejos tiempos"}
 								]
-		erb :index
+		simple + (haml :index)
 		#"<h1>Bienvenido</h1><br><h3>Hola mundo...</h3>"
 	end
 
@@ -35,13 +44,21 @@ class App
 	def best_restaurants_json
 		# mini-train replaces dots and dashes with underscores
 		# So you can trigger this handler by visiting /best-restaurant.json
-		@res['Content-Type'] = "text/plain;charset=utf-8"
-		JSON.generate({
+		json_response({
 			'title' => 'Best restaurants in town',
 			'list' => "{ nuevo: 'artículo', antiguo: 'años'}"
 		})
 	end
 
+	def best_restaurants_yaml
+		#you can generate YAML responses (next time we will use XML)
+		yaml_response({
+			'title' => 'Best restaurants in town',
+			'list' => "{ nuevo: 'artículo', antiguo: 'años'}"
+		})
+	end
+	
+	
 	def envy(*args)
 		@res['Content-Type'] = "text/html;charset=utf-8"
 		my_res = ""

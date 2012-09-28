@@ -1,8 +1,8 @@
-﻿<head>
+<head>
 <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Play:400,700'/>
 <link rel="stylesheet" type="text/css" href="/css/layout.css"/>
 </head>
-<h1>Algunos artículos...<h1><br>
+<h1>Algunos artículos (.erb)...<h1>
 <% @articles.each do |art| %>
-<h2> <%= art[:titulo] %> </h2><br>
+<h2> <%= art[:titulo] %> </h2>
 <% end %>
