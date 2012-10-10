@@ -37,7 +37,7 @@ Now save this into app.rb
 	      # @action_arguments => Arguments for the action (really?)
 	    end
 
-			helpers do
+      helpers do
 				#altough you can write many things in before block
 				#you always need helpers for your main app
 				def help(with)
@@ -91,6 +91,7 @@ Now save this into app.rb
 
 	    after do
 	      Spy.analyse.send_info_to([:government, :facebook, :google, :james_bond])
+	      #this was a joke
 	    end
 
 	  end
@@ -101,7 +102,7 @@ Class Spy doesn't exist so you need to create it (he he, just kidding).
 WHAT mini-train DOES NOT
 ===================
 
-- Support templates other than ERB (It's a matter of time to support slim, haml and others)
+- Support templates other than ERB (Slim, Haml and other tilt based templates has been added)
 - Session/Cookies administration (Like for many things, use a middleware instead ex: Rack::Session::Cookies)
 - Prepare the coffee (Emacs does but i had never used it, just geany)
 - So many things, but what is a fork for...

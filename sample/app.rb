@@ -1,5 +1,7 @@
 ﻿require 'minitrain'
-require 'haml'
+require 'slim'
+require 'yaml'
+require 'json'
 class App
 	include Minitrain # Still no classes to inherit but don't worry just await!
 
@@ -18,6 +20,17 @@ class App
 		def simple
 			"<b>Siempre genera BOLD</b>"
 		end
+
+    def json_response(data=nil)
+			@res['Content-Type'] = "text/plain;charset=utf-8"
+			data.nil? ? "{}" : JSON.generate(data)
+    end
+    
+    def yaml_response(data=nil)
+			@res['Content-Type'] = "text/plain;charset=utf-8"
+			data.to_yaml
+    end
+    
 	end
 
 	def index(*args)
@@ -28,7 +41,7 @@ class App
 								 {titulo: "bienvenidos", contenido: "Nunca habra paz..."},
 								 {titulo: "el final", contenido: "como en los viejos tiempos"}
 								]
-		simple + (haml :index)
+		simple + (slim :index)
 		#"<h1>Bienvenido</h1><br><h3>Hola mundo...</h3>"
 	end
 
@@ -43,7 +56,7 @@ class App
 
 	def best_restaurants_json
 		# mini-train replaces dots and dashes with underscores
-		# So you can trigger this handler by visiting /best-restaurant.json
+		# So you can trigger this handler by visiting /best-restaurants.json
 		json_response({
 			'title' => 'Best restaurants in town',
 			'list' => "{ nuevo: 'artículo', antiguo: 'años'}"
@@ -57,7 +70,6 @@ class App
 			'list' => "{ nuevo: 'artículo', antiguo: 'años'}"
 		})
 	end
-	
 	
 	def envy(*args)
 		@res['Content-Type'] = "text/html;charset=utf-8"

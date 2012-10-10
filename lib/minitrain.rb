@@ -28,10 +28,8 @@ module Minitrain
             @action, @action_arguments = 'not_found', @path_atoms
           end
         end
-        
         instance_eval(&self.class.before_block) unless self.class.before_block.nil?
         instance_eval(&self.class.helpers_block) unless self.class.helpers_block.nil?
-        
         begin
           @res.write(self.__send__(@action,*@action_arguments))
         rescue ArgumentError => e
@@ -39,7 +37,6 @@ module Minitrain
           raise unless failed_method==@action
           @res.write(self.__send__('not_found', @path_atoms))
         end
-        
         instance_eval(&self.class.after_block) unless self.class.after_block.nil?
       }
     end
@@ -79,16 +76,6 @@ module Minitrain
       "ERROR 500"
     end
     
-    def json_response(data=nil)
-			@res['Content-Type'] = "text/plain;charset=utf-8"
-			data.nil? ? "{}" : JSON.generate(data)
-    end
-    
-    def yaml_response(data=nil)
-			@res['Content-Type'] = "text/plain;charset=utf-8"
-			data.to_yaml
-    end
-    
     def tpl(template, extention)
 			key = (template.to_s + extention.gsub(/[.]/,"_")).to_sym
       @@tilt_cache ||= {}
@@ -120,6 +107,5 @@ module Minitrain
 			tpl(template,'.scss')
 		end
   end
-  
   
 end

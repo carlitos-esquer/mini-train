@@ -83,7 +83,7 @@ end
 SessionedR = ::Rack::MockRequest.new(::Rack::Session::Cookie.new(::Rack::Lint.new(Sessioned.new)))
 
 # =============
-# = Sessioned =
+# = Helpers =
 # =============
 
 class UsingHelpers
@@ -92,6 +92,7 @@ class UsingHelpers
 	def index; hola("mundo");	end
 end
 UsinghelpersR = ::Rack::MockRequest.new(::Rack::Lint.new(UsingHelpers.new))
+
 # =========
 # = Specs =
 # =========
