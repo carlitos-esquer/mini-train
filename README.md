@@ -8,7 +8,7 @@ mini-train
 mini-train is an attempt to fork from a rack project(rack-golem) into
 a very simple web mini-framework (thats the name mini-train)
 
-Install with: (there are no gems yet, so don't try to install right now)
+i have uploaded (23/12/2012) this gem into rubygems.org, so now you can:
 
     sudo gem install mini-train
 
