@@ -7,5 +7,5 @@ body
 	- @articles.each do |art|
 		h2= art[:titulo]
 		br
-		.content=yield
+		.content=art[:contenido]
 	
